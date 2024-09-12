@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Project manager",
-  description: "Gestion de projets en entreprise",
+  title: "Agility management",
+  description: "Gestion de projets agile en entreprise",
 };
 
 export default function RootLayout({
