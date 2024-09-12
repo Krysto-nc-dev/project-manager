@@ -1,11 +1,15 @@
 "use client";
-import { LockIcon } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/app/redux";
+import { Home, Icon, LockIcon } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import path from "path";
+// import React, { useState } from "react";
 
 const Sidebar = () => {
-  const [showProjects, setShowProjects] = useState(true);
-  const [showPriority, setShowPriority] = useState(true);
+  //   const [showProjects, setShowProjects] = useState(true);
+  //   const [showPriority, setShowPriority] = useState(true);
 
   const sidebarClassNames = ` fixed flex flex-col h-[100%] justify-between shadow-xl 
    transition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white 
@@ -41,8 +45,54 @@ const Sidebar = () => {
         </div>
 
         {/* Navbar Links */}
+        <nav className="z-10 w-full">
+          <SidebarLink icon={Home} label="Home" href="/" />
+        </nav>
       </div>
     </div>
+  );
+};
+
+interface SidebarLinkProps {
+  href: string;
+  icon: LucideIcon;
+  label: string;
+  isCollapsed: boolean;
+}
+
+const SidebarLink = ({
+  href,
+  icon: Icon,
+  label,
+  //   isCollapsed,
+}: sidebarLinkProps) => {
+  const pathname = usePathname();
+  const isActive =
+    pathname === href || (pathname === "/" && href === "/dashboard");
+  const screenWidth = window.innerWidth;
+  const dispatch = useAppDispatch();
+
+  const isSidebarCollapsed = useAppSelector(
+    (state) => state.global.isSidebarCollapsed,
+  );
+
+  return (
+    <Link href={href} className="w-full">
+      <div
+        className={`relative flex cursor-pointer items-center gap-3 transition-colors hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-700 ${
+          isActive ? "bg-gray-100 text-white dark:bg-gray-600" : ""
+        } justify-start px-8 py-3`}
+      >
+        {isActive && (
+          <div className="absolute left-0 top-0 h-[100%] w-[5px] bg-blue-200" />
+        )}
+
+        <Icon className="h-6 w-6 text-gray-800 dark:text-gray-100" />
+        <span className={`font-medium text-gray-800 dark:text-gray-100`}>
+          {label}
+        </span>
+      </div>
+    </Link>
   );
 };
 
